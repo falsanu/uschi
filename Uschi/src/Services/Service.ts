@@ -1,6 +1,7 @@
 export class Service implements Service {
   name: string;
   pid = 0;
+  execProcess: any;
 
   constructor(name: string) {
     this.name = name;
@@ -15,7 +16,7 @@ export class Service implements Service {
 
   public kill(): boolean {
     try {
-      process.kill(this.pid);
+      this.execProcess.kill("SIGHUP");
       return true;
     } catch (e) {
       console.log(e);

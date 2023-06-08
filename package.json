@@ -1,0 +1,29 @@
+{
+  "name": "uschi",
+  "version": "1.0.0",
+  "description": "Uschi is a Raspberry Pi powered personal helper. You talk she does.",
+  "main": "sync.js",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sync-changes": "echo 'Changes will be pushed to Raspberry Pi' && nodemon --config nodemon.sync.json",
+    "install": "./install.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/falsanu/uschi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/falsanu/uschi/issues"
+  },
+  "homepage": "https://github.com/falsanu/uschi#readme",
+  "devDependencies": {
+    "chalk": "^4.1.0",
+    "nodemon": "^2.0.22",
+    "rsync": "^0.6.1"
+  }
+}

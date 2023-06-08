@@ -1,19 +1,22 @@
-# Uschi
+#!/bin/sh
 
-Uschi is a Raspberry Pi powered personal helper. You talk she does.
+cwd=$(pwd)
 
-## Installation
+echo "Installing Uschi on Raspberry PI"
+npm i
 
-For development you need to install
+cd Uschi && npm i
 
-### Install video player on Raspberry Pi
+echo "Installing HUD"
+cd ../Hud && npm i
 
-```
+echo "Installing VideoViewer"
 git clone https://github.com/hzeller/rpi-rgb-led-matrix.git /tmp/rpi-rgb-led-matrix
 cd /tmp/rpi-rgb-led-matrix/utils
 sudo apt-get update
 sudo apt-get install pkg-config libavcodec-dev libavformat-dev libswscale-dev
 make video-viewer
-mv video-viewer ~/_Projects/Uschi/Video
+mv video-viewer "$(pwd)/Video"
 rm -rf /tmp/rpi-rgb-led-matrix
-```
+
+echo "Installation done!"

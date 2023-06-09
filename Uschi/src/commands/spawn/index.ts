@@ -10,12 +10,11 @@ export default class Spawn extends Command {
   static examples = [`$ uschi spawn hud`];
 
   static flags = {
-    servcie: Flags.string({
+    service: Flags.string({
       char: "t",
       description: "define timezone, default Europe/Berlin",
-      default: "Europe/Berlin",
       required: false,
-      options: ["hud", "video", "exit"],
+      options: ["hud", "screensaver", "video", "exit"],
     }),
   };
 
@@ -30,11 +29,12 @@ export default class Spawn extends Command {
     let exit = false;
     while (!exit) {
       const answer: any = await select({
-        message: "select a service",
+        message: "Select a service",
         choices: [
           new Separator(),
-          { name: "hud", value: "hud" },
-          { name: "video", value: "video" },
+          { name: "HUD", value: "hud" },
+          { name: "Screensaver", value: "screensaver" },
+          { name: "Video", value: "video" },
           { name: "exit", value: "exit" },
         ],
       });
@@ -46,6 +46,9 @@ export default class Spawn extends Command {
           break;
         case "video":
           this.serviceManager.runService("VideoService");
+          break;
+        case "screensaver":
+          this.serviceManager.runService("ScreenSaverService");
           break;
         case "exit":
           exit = true;

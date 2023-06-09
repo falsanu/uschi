@@ -10,6 +10,9 @@ cd Uschi && npm i
 echo "Installing HUD"
 cd ../Hud && npm i
 
+echo "Installing ScreenSaver"
+cd ../Hud && npm i
+
 echo "Installing VideoViewer"
 git clone https://github.com/hzeller/rpi-rgb-led-matrix.git /tmp/rpi-rgb-led-matrix
 cd /tmp/rpi-rgb-led-matrix/utils

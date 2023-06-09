@@ -1,4 +1,5 @@
 import { HudService } from "../Services/HudService/HudService";
+import { ScreenSaverService } from "../Services/ScreenSaverService/ScreenSaverService";
 import { Service } from "../Services/ServiceInterface";
 import { VideoService } from "../Services/VideoService/VideoService";
 
@@ -20,6 +21,9 @@ export class ServiceManager {
 
     const hudService = new HudService();
     this.services.push(hudService);
+
+    const screenSaverService = new ScreenSaverService();
+    this.services.push(screenSaverService);
   }
 
   private pickService(service: string): any {

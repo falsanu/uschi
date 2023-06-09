@@ -154,11 +154,15 @@ https://v6.bvg.transport.rest/getting-started.html
 
 
 */
+
+/**
+ * BVG Data
+ */
 let BVGData: Array<Object> = [];
 function writeBVG(matrix: LedMatrixInstance) {
   BVGData.sort((a: any, b: any) => parseInt(a.min) - parseInt(b.min));
   BVGData = BVGData.slice(0, 7);
-  console.log(BVGData);
+  //   console.log(BVGData);
   if (BVGData.length > 0) {
     BVGData.forEach((item: any, i) => {
       //   matrix.drawText(item.dir, 50, 30 + 10 * i); // write tram infos
@@ -195,7 +199,7 @@ function writeBVG(matrix: LedMatrixInstance) {
 function updateBVGData(stations: Array<string>) {
   BVGData = [];
   stations.forEach(async (item) => {
-    console.log('Requesting BVG-Data');
+    console.log('Requesting BVG-Data for', item);
     const response = await axios.get(
       `https://v6.bvg.transport.rest/stops/${item}/departures?results=10`,
       {
@@ -225,65 +229,14 @@ function updateBVGData(stations: Array<string>) {
   });
 }
 
+/**
+ * Weather Data
+ */
 let weatherData: any;
-/*
-{
-  "latitude": 52.52,
-  "longitude": 13.419998,
-  "generationtime_ms": 0.4138946533203125,
-  "utc_offset_seconds": 7200,
-  "timezone": "Europe/Berlin",
-  "timezone_abbreviation": "CEST",
-  "elevation": 38,
-  "daily_units": {
-    "time": "iso8601",
-    "weathercode": "wmo code",
-    "temperature_2m_max": "°C",
-    "temperature_2m_min": "°C"
-  },
-  "daily": {
-    "time": [
-      "2023-06-09",
-      "2023-06-10",
-      "2023-06-11",
-      "2023-06-12",
-      "2023-06-13",
-      "2023-06-14",
-      "2023-06-15"
-    ],
-    "weathercode": [
-      3,
-      80,
-      3,
-      3,
-      3,
-      61,
-      3
-    ],
-    "temperature_2m_max": [
-      28.9,
-      29.1,
-      27.2,
-      25.9,
-      23.8,
-      18.6,
-      23.9
-    ],
-    "temperature_2m_min": [
-      16.9,
-      15.2,
-      14.1,
-      14.5,
-      13.9,
-      14.6,
-      13.7
-    ]
-  }
-}
-*/
+
 function writeWeatherData(matrix: LedMatrixInstance) {
-  if (weatherData.daily) {
-    const text = weatherData.daily.temperature_2m_max[0] + ' °C';
+  if (weatherData.current) {
+    const text = weatherData.current + ' °C';
     if (weatherData.daily.weathercode) {
       switch (weatherData.daily.weathercode[0]) {
         case 0:
@@ -339,9 +292,16 @@ function drawCloud(matrix: LedMatrixInstance, x: number, y: number) {
   matrix.fgColor(oldColor);
 }
 
+function roundMinutes(date: Date) {
+  date.setHours(date.getHours() + Math.round(date.getMinutes() / 60));
+  date.setMinutes(0, 0, 0); // Resets also seconds and milliseconds
+
+  return date;
+}
+
 async function updateWeatherData() {
   const response = await axios.get(
-    `https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=Europe%2FBerlin`,
+    `https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&daily=weathercode,temperature_2m_max,temperature_2m_min&forecast_days=1&timezone=Europe%2FBerlin`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -349,6 +309,16 @@ async function updateWeatherData() {
     }
   );
   weatherData = response.data;
+  const slot = weatherData.hourly.time.findIndex((item: string) => {
+    if (new Date(item) < roundMinutes(new Date())) {
+    } else if (new Date(item) > roundMinutes(new Date())) {
+    } else {
+      return true;
+    }
+  });
+  console.log(slot);
+  weatherData.current = weatherData.hourly.temperature_2m[slot];
+  console.log(weatherData);
 }
 
 function getMinutes(now: Date, planned: Date) {

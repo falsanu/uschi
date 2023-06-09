@@ -15,8 +15,8 @@
     "type": "git",
     "url": "git+https://github.com/falsanu/uschi.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jan Fanslau",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/falsanu/uschi/issues"
   },

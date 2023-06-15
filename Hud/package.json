@@ -16,6 +16,7 @@
     "bindings": "^1.5.0",
     "canvas": "^2.11.2",
     "dayjs": "^1.11.8",
+    "esbuild": "0.18.0",
     "gl-matrix": "^3.4.3",
     "moment": "^2.29.4",
     "momentjs": "^2.0.0",

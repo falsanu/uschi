@@ -7,7 +7,7 @@ import {
   HorizontalAlignment,
   VerticalAlignment,
 } from 'rpi-led-matrix';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { matrixOptions, runtimeOptions } from './config/_config';
 import axios from 'axios';
 

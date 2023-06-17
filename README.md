@@ -43,3 +43,7 @@ rm -rf /tmp/rpi-rgb-led-matrix
 # Contributing
 
 Feel free to contribute, lets discuss what could be done better.
+
+# Used 3RD-Party Repos
+
+https://github.com/coqui-ai/STT-examples

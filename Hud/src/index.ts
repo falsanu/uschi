@@ -197,6 +197,7 @@ function writeBVG(matrix: LedMatrixInstance) {
 }
 
 function updateBVGData(stations: Array<string>) {
+  //https://v6.bvg.transport.rest/getting-started.html
   BVGData = [];
   stations.forEach(async (item) => {
     console.log('Requesting BVG-Data for', item);

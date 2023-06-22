@@ -22,4 +22,7 @@ make video-viewer
 mv video-viewer "$(pwd)/Video"
 rm -rf /tmp/rpi-rgb-led-matrix
 
+echo "copying rpi-led-matrix.node"
+cp "$(pwd)/Hud/node_modules/rpi-led-matrix/build/Release/rpi-led-matrix.node" "$(pwd)/Uschi/build"
+
 echo "Installation done!"

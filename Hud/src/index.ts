@@ -10,6 +10,7 @@ import {
 import dayjs from 'dayjs';
 import { matrixOptions, runtimeOptions } from './config/_config';
 import axios from 'axios';
+import { OctoPrint } from './octoPrint';
 
 const wait = (t: number) => new Promise((ok) => setTimeout(ok, t));
 const runUntil = 1000;
@@ -261,7 +262,7 @@ function writeWeatherData(matrix: LedMatrixInstance) {
       }
       matrix.drawText(text, 16, 8);
     } else {
-      console.log(weatherData);
+      //console.log(weatherData);
     }
   }
 }
@@ -316,9 +317,9 @@ async function updateWeatherData() {
       return true;
     }
   });
-  console.log(slot);
+  //console.log(slot);
   weatherData.current = weatherData.hourly.temperature_2m[slot];
-  console.log(weatherData);
+  //console.log(weatherData);
 }
 
 function getMinutes(now: Date, planned: Date) {
@@ -327,6 +328,7 @@ function getMinutes(now: Date, planned: Date) {
 }
 let counter2 = 0;
 let flip: Boolean = false;
+let flipContent: Boolean = true;
 
 (() => {
   try {
@@ -335,9 +337,23 @@ let flip: Boolean = false;
 
     updateBVGData(['900140017', '900141506']);
     updateWeatherData();
+
+    let octo = new OctoPrint({
+      apiKey: process.env.OCTO_API_KEY || '19E0FDC96B114444A1DA6C00D20DCBE6', // has been updated anyhow
+      apiUrl: process.env.OCTO_API_URL || 'http://192.168.1.198/api',
+      ledMatrix: matrix,
+    });
+    octo.updateLED();
     const interval = setInterval(() => {
+      if (flipContent) {
+        //write Octo Content
+        octo.getStatusData();
+      } else {
+        updateBVGData(['900140017', '900141506']);
+      }
+      flipContent = !flipContent;
+
       // get updated data every 30 seconds for BVG
-      updateBVGData(['900140017', '900141506']);
     }, 30000);
 
     const weatherInterval = setInterval(() => {
@@ -376,8 +392,12 @@ let flip: Boolean = false;
       }
 
       matrix.drawText(text, 150, 14);
+      if (flipContent) {
+        octo.updateLED();
+      } else {
+        writeBVG(matrix);
+      }
 
-      writeBVG(matrix);
       writeWeatherData(matrix);
       matrix.sync();
       counter2++;

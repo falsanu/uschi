@@ -7,10 +7,13 @@ import {
   HorizontalAlignment,
   VerticalAlignment,
 } from 'rpi-led-matrix';
-import dayjs from 'dayjs';
+
 import { matrixOptions, runtimeOptions } from './config/_config';
 import axios from 'axios';
 import { OctoPrint } from './octoPrint';
+import { BVG } from './BVG';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const wait = (t: number) => new Promise((ok) => setTimeout(ok, t));
 const runUntil = 1000;
@@ -23,212 +26,6 @@ const titleFont = new Font(
   'spleen-8x16.bdf',
   `${process.cwd()}/../Hud/fonts/spleen-8x16.bdf`
 );
-
-/*
-
-BVG Daten
-https://v6.bvg.transport.rest/getting-started.html
-
-{
-    "type": "stop",
-    "id": "900141506",
-    "name": "Am Steinberg (Berlin)",
-    "location": {
-      "type": "location",
-      "id": "900141506",
-      "latitude": 52.558346,
-      "longitude": 13.433255
-    },
-    "products": {
-      "suburban": false,
-      "subway": false,
-      "tram": true,
-      "bus": true,
-      "ferry": false,
-      "express": false,
-      "regional": false
-    },
-    "stationDHID": "de:11000:900141506"
-  },
-
-
-   {
-    "type": "stop",
-    "id": "900140017",
-    "name": "Gustav-Adolf-Str./Langhansstr. (Berlin)",
-    "location": {
-      "type": "location",
-      "id": "900140017",
-      "latitude": 52.553609,
-      "longitude": 13.434729
-    },
-    "products": {
-      "suburban": false,
-      "subway": false,
-      "tram": true,
-      "bus": true,
-      "ferry": false,
-      "express": false,
-      "regional": false
-    },
-    "stationDHID": "de:11000:900140017"
-  },
-
-{
-      "tripId": "1|42311|28|86|8062023",
-      "stop": {
-        "type": "stop",
-        "id": "900141506",
-        "name": "Am Steinberg (Berlin)",
-        "location": {
-          "type": "location",
-          "id": "900141506",
-          "latitude": 52.558346,
-          "longitude": 13.433255
-        },
-        "products": {
-          "suburban": false,
-          "subway": false,
-          "tram": true,
-          "bus": true,
-          "ferry": false,
-          "express": false,
-          "regional": false
-        },
-        "stationDHID": "de:11000:900141506"
-      },
-      "when": "2023-06-08T15:33:00+02:00",
-      "plannedWhen": "2023-06-08T15:33:00+02:00",
-      "delay": 0,
-      "platform": null,
-      "plannedPlatform": null,
-      "prognosisType": "calculated",
-      "direction": "S+U Alexanderplatz",
-      "provenance": null,
-      "line": {
-        "type": "line",
-        "id": "m2",
-        "fahrtNr": "7159",
-        "name": "M2",
-        "public": true,
-        "adminCode": "BVT---",
-        "productName": "Tram",
-        "mode": "train",
-        "product": "tram",
-        "operator": {
-          "type": "operator",
-          "id": "berliner-verkehrsbetriebe",
-          "name": "Berliner Verkehrsbetriebe"
-        }
-      },
-      "remarks": [
-        {
-          "type": "hint",
-          "code": "FK",
-          "text": "Bicycle conveyance"
-        }
-      ],
-      "origin": null,
-      "destination": {
-        "type": "stop",
-        "id": "900100024",
-        "name": "S+U Alexanderplatz Bhf/Dircksenstr. (Berlin)",
-        "location": {
-          "type": "location",
-          "id": "900100024",
-          "latitude": 52.521481,
-          "longitude": 13.411924
-        },
-        "products": {
-          "suburban": false,
-          "subway": false,
-          "tram": true,
-          "bus": false,
-          "ferry": false,
-          "express": false,
-          "regional": false
-        },
-        "stationDHID": "de:11000:900100024"
-      },
-      "occupancy": "low"
-    }
-
-
-*/
-
-/**
- * BVG Data
- */
-let BVGData: Array<Object> = [];
-function writeBVG(matrix: LedMatrixInstance) {
-  BVGData.sort((a: any, b: any) => parseInt(a.min) - parseInt(b.min));
-  BVGData = BVGData.slice(0, 7);
-  //   console.log(BVGData);
-  if (BVGData.length > 0) {
-    BVGData.forEach((item: any, i) => {
-      //   matrix.drawText(item.dir, 50, 30 + 10 * i); // write tram infos
-      const lines = LayoutUtils.textToLines(
-        font,
-        matrix.width() - 50,
-        item.dir
-      );
-      let line = [];
-      if (lines.length > 1) {
-        line.push(lines[0]);
-      } else {
-        line = lines;
-      }
-      const glyphs = LayoutUtils.linesToMappedGlyphs(
-        line,
-        font.height(),
-        matrix.width(),
-        matrix.height(),
-        HorizontalAlignment.Left,
-        VerticalAlignment.Middle
-      );
-
-      for (const glyph of glyphs) {
-        matrix.drawText(glyph.char, glyph.x + 50, 30 + 10 * i);
-      }
-
-      matrix.drawText(item.line, 30, 30 + 10 * i); // write tram infos
-      matrix.drawText(item.min, 10, 30 + 10 * i); // write the time
-    });
-  }
-}
-
-function updateBVGData(stations: Array<string>) {
-  BVGData = [];
-  stations.forEach(async (item) => {
-    console.log('Requesting BVG-Data for', item);
-    const response = await axios.get(
-      `https://v6.bvg.transport.rest/stops/${item}/departures?results=10`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    BVGData.push(
-      ...response.data.departures
-        .filter((item: any) => item.line.product === 'tram')
-        .map((item: any) => {
-          const dir = replaceUmlaute(item.destination.name);
-          const now = new Date();
-          const planned = new Date(item.plannedWhen);
-          const min = getMinutes(now, planned) + "'";
-          return {
-            line: item.line.name,
-            dir,
-            // plannedWhen: item.plannedWhen,
-            min,
-          };
-        })
-    );
-    // console.log('BVGData.length:' + BVGData.length);
-  });
-}
 
 /**
  * Weather Data
@@ -322,10 +119,6 @@ async function updateWeatherData() {
   //console.log(weatherData);
 }
 
-function getMinutes(now: Date, planned: Date) {
-  const difference = dayjs(planned).diff(dayjs(now), 'minutes');
-  return difference;
-}
 let counter2 = 0;
 let flip: Boolean = false;
 let flipContent: Boolean = true;
@@ -335,7 +128,6 @@ let flipContent: Boolean = true;
     const matrix = new LedMatrix(matrixOptions, runtimeOptions);
     matrix.clear().fgColor(0xffffff).brightness(100);
 
-    updateBVGData(['900140017', '900141506']);
     updateWeatherData();
 
     let octo = new OctoPrint({
@@ -343,13 +135,18 @@ let flipContent: Boolean = true;
       apiUrl: process.env.OCTO_API_URL || 'http://192.168.1.198/api',
       ledMatrix: matrix,
     });
+
+    let bvg = new BVG();
+    bvg.updateBVGData();
+
     octo.updateLED();
+
     const interval = setInterval(() => {
       if (flipContent) {
         //write Octo Content
         octo.getStatusData();
       } else {
-        updateBVGData(['900140017', '900141506']);
+        bvg.updateBVGData();
       }
       flipContent = !flipContent;
 
@@ -395,7 +192,7 @@ let flipContent: Boolean = true;
       if (flipContent) {
         octo.updateLED();
       } else {
-        writeBVG(matrix);
+        bvg.writeBVG(matrix);
       }
 
       writeWeatherData(matrix);
@@ -417,25 +214,3 @@ let flipContent: Boolean = true;
     console.error(`${__filename} caught: `, error);
   }
 })();
-
-const umlautMap: any = {
-  '\u00dc': 'UE',
-  '\u00c4': 'AE',
-  '\u00d6': 'OE',
-  '\u00fc': 'ue',
-  '\u00e4': 'ae',
-  '\u00f6': 'oe',
-  '\u00df': 'ss',
-};
-
-function replaceUmlaute(str: string) {
-  return str
-    .replace(/[\u00dc|\u00c4|\u00d6][a-z]/g, (a) => {
-      const big = umlautMap[a.slice(0, 1)];
-      return big.charAt(0) + big.charAt(1).toLowerCase() + a.slice(1);
-    })
-    .replace(
-      new RegExp('[' + Object.keys(umlautMap).join('|') + ']', 'g'),
-      (a) => umlautMap[a]
-    );
-}

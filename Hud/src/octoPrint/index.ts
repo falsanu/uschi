@@ -1,13 +1,7 @@
 import axios from 'axios';
-import {
-  LedMatrixInstance,
-  LedMatrix,
-  LayoutUtils,
-  FontInstance,
-  Font,
-  HorizontalAlignment,
-  VerticalAlignment,
-} from 'rpi-led-matrix';
+import { LedMatrixInstance, Font } from 'rpi-led-matrix';
+
+import { drawTextLineHelper } from '../utils';
 
 const font = new Font(
   'spleen-5x8.bdf',
@@ -152,40 +146,18 @@ export class OctoPrint {
     ],
   ];
 
-  public jobStatus: any = {
-    job: {
-      averagePrintTime: null,
-      estimatedPrintTime: null,
-      filament: null,
-      file: {
-        date: 1687348695,
-        display: 'pikachu_piggybank_v3_0.2mm_PLA_X1_17h8m.gcode',
-        name: 'pikachu_piggybank_v3_0.2mm_PLA_X1_17h8m.gcode',
-        origin: 'local',
-        path: 'pikachu_piggybank_v3_0.2mm_PLA_X1_17h8m.gcode',
-        size: 30444235,
-      },
-      lastPrintTime: null,
-      user: '3duschi',
-    },
-    progress: {
-      completion: 43.84316111079815,
-      filepos: 13347715,
-      printTime: 25008,
-      printTimeLeft: 31760,
-      printTimeLeftOrigin: 'estimate',
-    },
-    state: 'Printing',
-  };
+  public jobStatus: any = {};
 
   constructor(options: OctoOptionsObject) {
     this.apiKey = options.apiKey;
     this.apiUrl = options.apiUrl;
     this.ledMatrix = options.ledMatrix;
   }
+
   getCallConfig(): any {
     return { headers: { 'x-api-key': this.apiKey } };
   }
+
   async getStatusData() {
     try {
       const response = await axios.get(
@@ -193,7 +165,6 @@ export class OctoPrint {
         this.getCallConfig()
       );
       this.jobStatus = response.data;
-      //console.log(response);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.status);
@@ -215,11 +186,24 @@ export class OctoPrint {
 
     // Write Status of current Job
     this.ledMatrix.fgColor(0xffffff);
-    this.drawLineHelper('OctoPrint Status:', 55, 30);
-    console.log('Job Status', this.jobStatus.state);
+    drawTextLineHelper(
+      'OctoPrint Status:',
+      55,
+      30,
+      this.ledMatrix,
+      font,
+      false
+    );
     this.ledMatrix.drawText(this.jobStatus.state, 55, 40);
 
-    this.drawLineHelper('File:' + this.jobStatus.job.file.name, 55, 50);
+    drawTextLineHelper(
+      'File:' + this.jobStatus.job.file.name,
+      55,
+      50,
+      this.ledMatrix,
+      font,
+      false
+    );
 
     this.ledMatrix.drawText(
       this.jobStatus.progress.completion.toFixed(2) + ' %',
@@ -244,31 +228,6 @@ export class OctoPrint {
   updateLED() {
     console.log('Updating Octo-View');
     this.writeStatus();
-  }
-
-  drawLineHelper(text: string, x: number, y: number) {
-    const lines = LayoutUtils.textToLines(
-      font,
-      this.ledMatrix.width() - 50,
-      text
-    );
-    let line = [];
-    if (lines.length > 1) {
-      line.push(lines[0]);
-    } else {
-      line = lines;
-    }
-    const glyphs = LayoutUtils.linesToMappedGlyphs(
-      line,
-      font.height(),
-      this.ledMatrix.width(),
-      this.ledMatrix.height(),
-      HorizontalAlignment.Left,
-      VerticalAlignment.Middle
-    );
-    for (const glyph of glyphs) {
-      this.ledMatrix.drawText(glyph.char, glyph.x + x, y);
-    }
   }
 }
 

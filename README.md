@@ -6,6 +6,7 @@ Uschi is a Raspberry Pi powered personal helper. You talk it does.
 
 Big shout out to:
 https://github.com/hzeller/rpi-rgb-led-matrix
+
 https://github.com/alexeden/rpi-led-matrix
 
 ## Features:

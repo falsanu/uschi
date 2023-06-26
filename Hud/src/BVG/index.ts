@@ -39,7 +39,7 @@ export class BVG {
     }
 
     console.log('Updating BVG-Data for:', stations);
-
+    this.BVGData = [];
     stations.forEach(async (item) => {
       try {
         const response = await axios.get(
@@ -50,7 +50,7 @@ export class BVG {
             },
           }
         );
-        this.BVGData = [];
+
         if (response.data.departures) {
           this.BVGData.push(
             ...response.data.departures

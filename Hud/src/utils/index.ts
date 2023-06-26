@@ -33,31 +33,42 @@ export function drawTextLineHelper(
   text: string,
   x: number,
   y: number,
-  ledMatrix: LedMatrixInstance,
+  matrix: LedMatrixInstance,
   font: FontInstance,
   multiLine: Boolean = false
 ) {
-  const lines = LayoutUtils.textToLines(font, ledMatrix.width() - 50, text);
+  const lines = LayoutUtils.textToLines(font, matrix.width() - 50, text);
   let line = [];
+  // console.log(text);
+  // console.log(lines);
   if (lines.length > 1) {
     line.push(lines[0]);
   } else {
     line = lines;
   }
+  // console.log(line);
   const glyphs = LayoutUtils.linesToMappedGlyphs(
     line,
     font.height(),
-    ledMatrix.width(),
-    ledMatrix.height(),
+    matrix.width(),
+    matrix.height(),
     HorizontalAlignment.Left,
     VerticalAlignment.Middle
   );
   for (const glyph of glyphs) {
-    ledMatrix.drawText(glyph.char, glyph.x + x, y);
+    // console.log(glyph.char);
+    matrix.drawText(glyph.char, glyph.x + x, y);
   }
 }
 
 export function getMinutes(now: Date, planned: Date) {
   const difference = dayjs(planned).diff(dayjs(now), 'minutes');
   return difference;
+}
+
+export function roundMinutes(date: Date) {
+  date.setHours(date.getHours() + Math.round(date.getMinutes() / 60));
+  date.setMinutes(0, 0, 0); // Resets also seconds and milliseconds
+
+  return date;
 }

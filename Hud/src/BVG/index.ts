@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { LedMatrixInstance, Font } from 'rpi-led-matrix';
 import { replaceUmlaute, getMinutes, drawTextLineHelper } from '../utils';
+import dotenv from 'dotenv';
+dotenv.config();
+
 /**
  * Request data from BVG-REST-API and display them on the matrix
  *
@@ -8,6 +11,8 @@ import { replaceUmlaute, getMinutes, drawTextLineHelper } from '../utils';
  */
 export class BVG {
   private BVGData: Array<any>;
+  private updateInterval: number = 15000;
+  private updater: any;
   private font = new Font(
     'spleen-5x8.bdf',
     `${process.cwd()}/../Hud/fonts/spleen-5x8.bdf`
@@ -15,9 +20,12 @@ export class BVG {
 
   constructor() {
     this.BVGData = [];
-
+    this.updateBVGData();
     // update data every n seconds
-    const interval = setInterval(this.updateBVGData, 300000);
+    this.updater = setInterval(
+      this.updateBVGData.bind(this),
+      this.updateInterval
+    );
   }
 
   updateBVGData(stations?: Array<string>) {
@@ -29,33 +37,45 @@ export class BVG {
         return;
       }
     }
-    console.log('Updating BVG-Data for:', stations);
-    this.BVGData = [];
-    stations.forEach(async (item) => {
-      const response = await axios.get(
-        `https://v6.bvg.transport.rest/stops/${item}/departures?results=10`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
 
-      this.BVGData.push(
-        ...response.data.departures
-          .filter((item: any) => item.line.product === 'tram')
-          .map((item: any) => {
-            const dir = replaceUmlaute(item.destination.name);
-            const now = new Date();
-            const planned = new Date(item.plannedWhen);
-            const min = getMinutes(now, planned) + "'";
-            return {
-              line: item.line.name,
-              dir,
-              min,
-            };
-          })
-      );
+    console.log('Updating BVG-Data for:', stations);
+
+    stations.forEach(async (item) => {
+      try {
+        const response = await axios.get(
+          `https://v6.bvg.transport.rest/stops/${item}/departures?results=10`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+        this.BVGData = [];
+        if (response.data.departures) {
+          this.BVGData.push(
+            ...response.data.departures
+              .filter((item: any) => item.line.product === 'tram')
+              .map((item: any) => {
+                const dir = replaceUmlaute(item.destination.name);
+                const now = new Date();
+                const planned = new Date(item.plannedWhen);
+                const min = getMinutes(now, planned) + "'";
+                return {
+                  line: item.line.name,
+                  dir,
+                  min,
+                };
+              })
+          );
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.log(error.status);
+          console.error(error.response);
+        } else {
+          console.error(error);
+        }
+      }
     });
   }
 

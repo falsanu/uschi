@@ -1,17 +1,12 @@
 import axios from 'axios';
 import { LedMatrixInstance, Font } from 'rpi-led-matrix';
-
 import { drawTextLineHelper } from '../utils';
-
+import dotenv from 'dotenv';
+dotenv.config();
 const font = new Font(
   'spleen-5x8.bdf',
   `${process.cwd()}/../Hud/fonts/spleen-5x8.bdf`
 );
-type OctoOptionsObject = {
-  apiKey: string;
-  apiUrl: string;
-  ledMatrix: LedMatrixInstance;
-};
 
 /**
  * OctoPrint for connecting with OctoAPI and write content on the display
@@ -20,9 +15,8 @@ type OctoOptionsObject = {
  *
  */
 export class OctoPrint {
-  private apiKey: string = '';
-  private apiUrl: string;
-  private ledMatrix: LedMatrixInstance;
+  private apiKey: string = process.env.OCTO_API_KEY || '';
+  private apiUrl: string = process.env.OCTO_API_URL || '';
   private logo: Array<Array<any>> = [
     [
       0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -145,25 +139,26 @@ export class OctoPrint {
       0x00000000, 0x000000,
     ],
   ];
+  private updater: any;
+  private updateInterval = 15000;
 
   public jobStatus: any = {};
 
-  constructor(options: OctoOptionsObject) {
-    this.apiKey = options.apiKey;
-    this.apiUrl = options.apiUrl;
-    this.ledMatrix = options.ledMatrix;
-  }
-
-  getCallConfig(): any {
-    return { headers: { 'x-api-key': this.apiKey } };
+  constructor() {
+    this.getStatusData();
+    this.updater = setInterval(
+      this.getStatusData.bind(this),
+      this.updateInterval
+    );
   }
 
   async getStatusData() {
     try {
-      const response = await axios.get(
-        `${this.apiUrl}/job`,
-        this.getCallConfig()
-      );
+      const url = `${this.apiUrl}/job`;
+      console.log('Fetching OctoData', url);
+      const response = await axios.get(url, {
+        headers: { 'x-api-key': this.apiKey },
+      });
       this.jobStatus = response.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -175,60 +170,71 @@ export class OctoPrint {
     }
   }
 
-  writeStatus(headerHeight: number = 0) {
+  writeStatus(matrix: LedMatrixInstance, headerHeight: number = 0) {
     let x = headerHeight;
-    this.ledMatrix.font(font);
+    matrix.font(font);
 
-    const oldColor = this.ledMatrix.fgColor();
+    const oldColor = matrix.fgColor();
 
     // Write Logo
-    this.drawImageToPosition(this.logo, 30, 30);
+    this.drawImageToPosition(matrix, this.logo, 30, 30);
 
-    // Write Status of current Job
-    this.ledMatrix.fgColor(0xffffff);
-    drawTextLineHelper(
-      'OctoPrint Status:',
-      55,
-      30,
-      this.ledMatrix,
-      font,
-      false
-    );
-    this.ledMatrix.drawText(this.jobStatus.state, 55, 40);
+    matrix.fgColor(0xffffff);
+    if (this.jobStatus.state) {
+      // Write Status of current Job
+      drawTextLineHelper('OctoPrint Status:', 55, 30, matrix, font, false);
+      matrix.drawText(this.jobStatus.state, 55, 40);
 
-    drawTextLineHelper(
-      'File:' + this.jobStatus.job.file.name,
-      55,
-      50,
-      this.ledMatrix,
-      font,
-      false
-    );
+      drawTextLineHelper(
+        'File: ' + this.jobStatus.job.file.name.substring(0, 15),
+        55,
+        50,
+        matrix,
+        font,
+        false
+      );
 
-    this.ledMatrix.drawText(
-      this.jobStatus.progress.completion.toFixed(2) + ' %',
-      55,
-      60
-    );
-    this.ledMatrix.fgColor(oldColor);
+      matrix.drawText(
+        this.jobStatus.progress.completion.toFixed(2) + ' %',
+        55,
+        60
+      );
+    } else {
+      //state not fetched yet
+      drawTextLineHelper(
+        'fetching OctoPrint data',
+        55,
+        30,
+        matrix,
+        font,
+        false
+      );
+    }
+
+    matrix.fgColor(oldColor);
   }
 
-  drawImageToPosition(image: Array<any>, x: number, y: number) {
-    const oldColor = this.ledMatrix.fgColor();
+  drawImageToPosition(
+    matrix: LedMatrixInstance,
+    image: Array<any>,
+    x: number,
+    y: number
+  ) {
+    const oldColor = matrix.fgColor();
 
     for (let lines = 0; lines < image.length; lines++) {
       for (let rows = 0; rows < image[lines].length; rows++) {
-        this.ledMatrix.fgColor(getRGBValue(image[lines][rows]));
-        this.ledMatrix.setPixel(x + rows, y + lines);
+        matrix.fgColor(getRGBValue(image[lines][rows]));
+        matrix.setPixel(x + rows, y + lines);
       }
     }
-    this.ledMatrix.fgColor(oldColor);
+    matrix.fgColor(oldColor);
   }
 
-  updateLED() {
-    console.log('Updating Octo-View');
-    this.writeStatus();
-  }
+  // updateLED() {
+  //   console.log('Updating Octo-View');
+  //   this.writeStatus();
+  // }
 }
 
 function getRGBValue(input: number): number {

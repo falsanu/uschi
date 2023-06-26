@@ -2,6 +2,8 @@ import { Args, Command, Flags } from "@oclif/core";
 // import * as inquirer from "inquirer";
 import select, { Separator } from "@inquirer/select";
 import { ServiceManager } from "../../ServiceManager/ServiceManager";
+import dotenv from "dotenv";
+dotenv.config();
 export default class Spawn extends Command {
   serviceManager = new ServiceManager();
 

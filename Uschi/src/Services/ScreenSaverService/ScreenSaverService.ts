@@ -10,7 +10,9 @@ export class ScreenSaverService extends Service {
     //save PID
     console.log(`Starting: ${this.name}`);
 
-    this.execProcess = spawn("ts-node", ["../ScreenSaver/src/index.ts"]);
+    this.execProcess = spawn("ts-node", ["../ScreenSaver/src/index.ts"], {
+      env: process.env,
+    });
     this.execProcess.on("spawn", () => {
       console.log("Spawned ScreenSaver Process");
     });

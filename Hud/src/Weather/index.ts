@@ -168,14 +168,15 @@ export class Weather {
     this.weatherData.current = this.weatherData.hourly.temperature_2m[slot];
   }
 
-  loadIcon(icon: string) {
+  async loadIcon(icon: string) {
     if (this.currentIconCode !== icon) {
       const cloudIcon = new ImageToIcon({
         pathToImage: `${process.cwd()}/../Hud/src/Weather/weather-icons/png/${icon}`,
         targetWidth: 10,
         targetHeight: 10,
       });
-      this.currentIcon = cloudIcon.getPixelArray();
+      await cloudIcon.init();
+      this.currentIcon = await cloudIcon.getPixelArrayAsync();
       this.currentIconCode = icon;
     }
   }

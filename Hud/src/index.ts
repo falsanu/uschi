@@ -8,9 +8,6 @@ import { Weather } from './Weather';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const wait = (t: number) => new Promise((ok) => setTimeout(ok, t));
-const runUntil = 1000;
-let counter = 0;
 const font = new Font(
   'spleen-5x8.bdf',
   `${process.cwd()}/../Hud/fonts/spleen-5x8.bdf`

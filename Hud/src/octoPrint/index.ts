@@ -181,24 +181,30 @@ export class OctoPrint {
 
     matrix.fgColor(0xffffff);
     if (this.jobStatus.state) {
-      // Write Status of current Job
-      drawTextLineHelper('OctoPrint Status:', 55, 30, matrix, font, false);
-      matrix.drawText(this.jobStatus.state, 55, 40);
-
-      drawTextLineHelper(
-        'File: ' + this.jobStatus.job.file.name.substring(0, 15),
-        55,
-        50,
-        matrix,
-        font,
-        false
-      );
-
-      matrix.drawText(
-        this.jobStatus.progress.completion.toFixed(2) + ' %',
-        55,
-        60
-      );
+      try {
+        // Write Status of current Job
+        drawTextLineHelper('OctoPrint Status:', 55, 30, matrix, font, false);
+        matrix.drawText(this.jobStatus.state, 55, 40);
+        if (this.jobStatus.job && this.jobStatus.job.file) {
+          drawTextLineHelper(
+            'File: ' + this.jobStatus.job.file.name.substring(0, 15),
+            55,
+            50,
+            matrix,
+            font,
+            false
+          );
+        }
+        if (this.jobStatus.progress && this.jobStatus.progress.completion) {
+          matrix.drawText(
+            this.jobStatus.progress.completion.toFixed(2) + ' %',
+            55,
+            60
+          );
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
     } else {
       //state not fetched yet
       drawTextLineHelper(

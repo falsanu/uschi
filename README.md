@@ -17,11 +17,11 @@ https://github.com/alexeden/rpi-led-matrix
 - Screensaver
 - Videoplayer
 - octoPi connection
+- image slideshow
 - CLI
 
 ## Planned Features
 
-- image slideshow
 - TTS
 - STT
 - ChatGPT

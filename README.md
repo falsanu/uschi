@@ -45,3 +45,8 @@ rm -rf /tmp/rpi-rgb-led-matrix
 # Contributing
 
 Feel free to contribute, lets discuss what could be done better.
+
+# Contribution
+
+Weather Icons
+https://dribbble.com/shots/3247006-Daily-UI-Weather-card-icons

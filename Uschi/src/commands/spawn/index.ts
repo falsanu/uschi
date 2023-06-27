@@ -35,6 +35,7 @@ export default class Spawn extends Command {
         choices: [
           new Separator(),
           { name: "HUD", value: "hud" },
+          { name: "ImageSlider", value: "imageslider" },
           { name: "Screensaver", value: "screensaver" },
           { name: "Video", value: "video" },
           { name: "exit", value: "exit" },
@@ -45,6 +46,9 @@ export default class Spawn extends Command {
       switch (service) {
         case "hud":
           this.serviceManager.runService("HudService");
+          break;
+        case "imageslider":
+          this.serviceManager.runService("ImageSlider");
           break;
         case "video":
           this.serviceManager.runService("VideoService");

@@ -62,14 +62,17 @@ export class Weather {
       temperature_2m_min: [17.3],
     },
   };
-  updateInterval: number = 1800000;
+  updateInterval: number = 10 * 60 * 1000;
   updater: any;
   currentIcon: any = new Array();
   currentIconCode: string = '';
 
   constructor() {
     this.updateWeatherData();
-    this.updater = setInterval(this.updateWeatherData, this.updateInterval);
+    this.updater = setInterval(
+      this.updateWeatherData.bind(this),
+      this.updateInterval
+    );
   }
 
   writeWeatherData(matrix: LedMatrixInstance) {

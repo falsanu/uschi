@@ -16,11 +16,11 @@ https://github.com/alexeden/rpi-led-matrix
 - Weather
 - Screensaver
 - Videoplayer
+- octoPi connection
 - CLI
 
 ## Planned Features
 
-- octoPi connection
 - image slideshow
 - TTS
 - STT

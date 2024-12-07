@@ -1,0 +1,327 @@
+{
+  "departures": [
+    {
+      "tripId": "1|42312|23|86|8062023",
+      "stop": {
+        "type": "stop",
+        "id": "900141506",
+        "name": "Am Steinberg (Berlin)",
+        "location": {
+          "type": "location",
+          "id": "900141506",
+          "latitude": 52.558346,
+          "longitude": 13.433255
+        },
+        "products": {
+          "suburban": false,
+          "subway": false,
+          "tram": true,
+          "bus": true,
+          "ferry": false,
+          "express": false,
+          "regional": false
+        },
+        "stationDHID": "de:11000:900141506"
+      },
+      "when": "2023-06-08T15:23:00+02:00",
+      "plannedWhen": "2023-06-08T15:23:00+02:00",
+      "delay": 0,
+      "platform": null,
+      "plannedPlatform": null,
+      "prognosisType": "prognosed",
+      "direction": "S+U Alexanderplatz",
+      "provenance": null,
+      "line": {
+        "type": "line",
+        "id": "m2",
+        "fahrtNr": "7161",
+        "name": "M2",
+        "public": true,
+        "adminCode": "BVT---",
+        "productName": "Tram",
+        "mode": "train",
+        "product": "tram",
+        "operator": {
+          "type": "operator",
+          "id": "berliner-verkehrsbetriebe",
+          "name": "Berliner Verkehrsbetriebe"
+        }
+      },
+      "remarks": [
+        {
+          "type": "hint",
+          "code": "FK",
+          "text": "Bicycle conveyance"
+        }
+      ],
+      "origin": null,
+      "destination": {
+        "type": "stop",
+        "id": "900100024",
+        "name": "S+U Alexanderplatz Bhf/Dircksenstr. (Berlin)",
+        "location": {
+          "type": "location",
+          "id": "900100024",
+          "latitude": 52.521481,
+          "longitude": 13.411924
+        },
+        "products": {
+          "suburban": false,
+          "subway": false,
+          "tram": true,
+          "bus": false,
+          "ferry": false,
+          "express": false,
+          "regional": false
+        },
+        "stationDHID": "de:11000:900100024"
+      },
+      "currentTripPosition": {
+        "type": "location",
+        "latitude": 52.556737,
+        "longitude": 13.429884
+      },
+      "occupancy": "low"
+    },
+    {
+      "tripId": "1|42304|46|86|8062023",
+      "stop": {
+        "type": "stop",
+        "id": "900141506",
+        "name": "Am Steinberg (Berlin)",
+        "location": {
+          "type": "location",
+          "id": "900141506",
+          "latitude": 52.558346,
+          "longitude": 13.433255
+        },
+        "products": {
+          "suburban": false,
+          "subway": false,
+          "tram": true,
+          "bus": true,
+          "ferry": false,
+          "express": false,
+          "regional": false
+        },
+        "stationDHID": "de:11000:900141506"
+      },
+      "when": "2023-06-08T15:28:00+02:00",
+      "plannedWhen": "2023-06-08T15:28:00+02:00",
+      "delay": 0,
+      "platform": null,
+      "plannedPlatform": null,
+      "prognosisType": "prognosed",
+      "direction": "S+U Alexanderplatz",
+      "provenance": null,
+      "line": {
+        "type": "line",
+        "id": "m2",
+        "fahrtNr": "7136",
+        "name": "M2",
+        "public": true,
+        "adminCode": "BVT---",
+        "productName": "Tram",
+        "mode": "train",
+        "product": "tram",
+        "operator": {
+          "type": "operator",
+          "id": "berliner-verkehrsbetriebe",
+          "name": "Berliner Verkehrsbetriebe"
+        }
+      },
+      "remarks": [
+        {
+          "type": "hint",
+          "code": "FK",
+          "text": "Bicycle conveyance"
+        }
+      ],
+      "origin": null,
+      "destination": {
+        "type": "stop",
+        "id": "900100024",
+        "name": "S+U Alexanderplatz Bhf/Dircksenstr. (Berlin)",
+        "location": {
+          "type": "location",
+          "id": "900100024",
+          "latitude": 52.521481,
+          "longitude": 13.411924
+        },
+        "products": {
+          "suburban": false,
+          "subway": false,
+          "tram": true,
+          "bus": false,
+          "ferry": false,
+          "express": false,
+          "regional": false
+        },
+        "stationDHID": "de:11000:900100024"
+      },
+      "occupancy": "low"
+    },
+    {
+      "tripId": "1|42354|3|86|8062023",
+      "stop": {
+        "type": "stop",
+        "id": "900141506",
+        "name": "Am Steinberg (Berlin)",
+        "location": {
+          "type": "location",
+          "id": "900141506",
+          "latitude": 52.558346,
+          "longitude": 13.433255
+        },
+        "products": {
+          "suburban": false,
+          "subway": false,
+          "tram": true,
+          "bus": true,
+          "ferry": false,
+          "express": false,
+          "regional": false
+        },
+        "stationDHID": "de:11000:900141506"
+      },
+      "when": "2023-06-08T15:30:00+02:00",
+      "plannedWhen": "2023-06-08T15:29:00+02:00",
+      "delay": 60,
+      "platform": null,
+      "plannedPlatform": null,
+      "prognosisType": "calculated",
+      "direction": "Heinersdorf",
+      "provenance": null,
+      "line": {
+        "type": "line",
+        "id": "m2",
+        "fahrtNr": "7226",
+        "name": "M2",
+        "public": true,
+        "adminCode": "BVT---",
+        "productName": "Tram",
+        "mode": "train",
+        "product": "tram",
+        "operator": {
+          "type": "operator",
+          "id": "berliner-verkehrsbetriebe",
+          "name": "Berliner Verkehrsbetriebe"
+        }
+      },
+      "remarks": [
+        {
+          "type": "hint",
+          "code": "FK",
+          "text": "Bicycle conveyance"
+        }
+      ],
+      "origin": null,
+      "destination": {
+        "type": "stop",
+        "id": "900141001",
+        "name": "Heinersdorf (Berlin)",
+        "location": {
+          "type": "location",
+          "id": "900141001",
+          "latitude": 52.572342,
+          "longitude": 13.437453
+        },
+        "products": {
+          "suburban": false,
+          "subway": false,
+          "tram": true,
+          "bus": false,
+          "ferry": false,
+          "express": false,
+          "regional": false
+        },
+        "stationDHID": "de:11000:900141001"
+      },
+      "currentTripPosition": {
+        "type": "location",
+        "latitude": 52.545087,
+        "longitude": 13.427565
+      },
+      "occupancy": "low"
+    },
+    {
+      "tripId": "1|42311|28|86|8062023",
+      "stop": {
+        "type": "stop",
+        "id": "900141506",
+        "name": "Am Steinberg (Berlin)",
+        "location": {
+          "type": "location",
+          "id": "900141506",
+          "latitude": 52.558346,
+          "longitude": 13.433255
+        },
+        "products": {
+          "suburban": false,
+          "subway": false,
+          "tram": true,
+          "bus": true,
+          "ferry": false,
+          "express": false,
+          "regional": false
+        },
+        "stationDHID": "de:11000:900141506"
+      },
+      "when": "2023-06-08T15:33:00+02:00",
+      "plannedWhen": "2023-06-08T15:33:00+02:00",
+      "delay": 0,
+      "platform": null,
+      "plannedPlatform": null,
+      "prognosisType": "calculated",
+      "direction": "S+U Alexanderplatz",
+      "provenance": null,
+      "line": {
+        "type": "line",
+        "id": "m2",
+        "fahrtNr": "7159",
+        "name": "M2",
+        "public": true,
+        "adminCode": "BVT---",
+        "productName": "Tram",
+        "mode": "train",
+        "product": "tram",
+        "operator": {
+          "type": "operator",
+          "id": "berliner-verkehrsbetriebe",
+          "name": "Berliner Verkehrsbetriebe"
+        }
+      },
+      "remarks": [
+        {
+          "type": "hint",
+          "code": "FK",
+          "text": "Bicycle conveyance"
+        }
+      ],
+      "origin": null,
+      "destination": {
+        "type": "stop",
+        "id": "900100024",
+        "name": "S+U Alexanderplatz Bhf/Dircksenstr. (Berlin)",
+        "location": {
+          "type": "location",
+          "id": "900100024",
+          "latitude": 52.521481,
+          "longitude": 13.411924
+        },
+        "products": {
+          "suburban": false,
+          "subway": false,
+          "tram": true,
+          "bus": false,
+          "ferry": false,
+          "express": false,
+          "regional": false
+        },
+        "stationDHID": "de:11000:900100024"
+      },
+      "occupancy": "low"
+    }
+  ],
+  "realtimeDataUpdatedAt": 1686230596
+}

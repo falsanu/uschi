@@ -1,0 +1,15 @@
+[Unit]
+Description=Uschi beschimpft dich
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/pi/_Projects/uschi/Schimpfolino/dist/index.js
+Restart=always
+User=0
+Group=0
+Environment=NODE_ENV=production
+WorkingDirectory=/home/pi/_Projects/uschi/Schimpfolino
+
+[Install]
+WantedBy=multi-user.target
+

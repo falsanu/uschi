@@ -3,6 +3,7 @@ import { ImageSliderService } from "../Services/ImageSlider/ImageSlider";
 import { ScreenSaverService } from "../Services/ScreenSaverService/ScreenSaverService";
 import { Service } from "../Services/ServiceInterface";
 import { VideoService } from "../Services/VideoService/VideoService";
+import { SchimpfolinoService } from "../Services/SchimpfolinoService/SchimpfolinoService";
 
 export class ServiceManager {
   activeService: Service | null;
@@ -28,6 +29,9 @@ export class ServiceManager {
 
     const screenSaverService = new ScreenSaverService();
     this.services.push(screenSaverService);
+
+    const schimpfolinoService = new SchimpfolinoService();
+    this.services.push(schimpfolinoService);
   }
 
   private pickService(service: string): any {

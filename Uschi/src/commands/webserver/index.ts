@@ -5,7 +5,6 @@ import { ServiceManager } from "../../ServiceManager/ServiceManager";
 import dotenv from "dotenv";
 dotenv.config();
 
-
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import path from "path";
@@ -34,12 +33,12 @@ export default class Webserver extends Command {
     const app: Express = express();
     const port = process.env.PORT || 3000;
     app.use(cors());
-    app.use(express.static(path.join(__dirname, '../../../../frontend/dist')));
+    app.use(express.static("/opt/uschi-frontend"));
    
     app.get("/startservice/:service", (req: Request, res: Response) => {
       const service = req.params.service;
       console.log("Should start service", req.params.service);
-      res.json({ service: req.params.service });
+      
 
       switch (service) {
         case "hud":
@@ -57,7 +56,12 @@ export default class Webserver extends Command {
         case "schimpfolino":
           this.serviceManager.runService("SchimpfolinoService");
           break;
+        case "off":
+            this.serviceManager.stopAll();
+            break;
       }
+
+      res.json({ service: req.params.service });
 
     });
 

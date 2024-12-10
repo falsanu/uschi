@@ -2,7 +2,7 @@
   "name": "hud",
   "version": "1.0.0",
   "description": "Displays data on the rpi-LED-Display",
-  "main": "dist/ndex.js",
+  "main": "dist/index.js",
   "author": "Jan Fanslau",
   "license": "MIT",
   "scripts": {
@@ -24,7 +24,7 @@
     "momentjs": "^2.0.0",
     "node-addon-api": "^3.0.0",
     "rpi-led-matrix": "^1.14.0",
-    "vecti": "^2.1.14"
+    "ts-ics": "^1.6.5"
   },
   "devDependencies": {
     "@types/color": "^3.0.1",

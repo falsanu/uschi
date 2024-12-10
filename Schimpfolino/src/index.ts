@@ -88,17 +88,22 @@ const generateSwear = ()=>{
   
   let first:string = getRandomElement(textFiles.eeprom1)
   let genus =Math.floor(Math.random() * 3);
-  console.log(genus)
-  if (genus != 0) {      
-    if (genus == 1){
+  
+  if (genus != 0) {      // 0 femininum
+    if (genus == 1){ // 1 maskulinum
       first+="r"
     }else{
-      first+="s"
+      first+="s"  // 2 Neutrum
     }
   } 
 
   let second:string = getRandomElement(textFiles.eeprom2)
-  second += getRandomElement(textFiles.eeprom3)
+  switch (genus) {
+    case 0: second += getRandomElement(textFiles.eeprom3); break;
+    case 1: second += getRandomElement(textFiles.eeprom4); break;
+    case 2: second += getRandomElement(textFiles.eeprom5); break;
+  }
+  
   return {first, second};
 }
 try{
@@ -120,8 +125,10 @@ const writeSwear = (matrix: LedMatrixInstance) => {
   matrix.fgColor(0xffffff);
   // drawTextLineHelper(swear.first, 10,30, matrix, swearFont, false)
   matrix.drawText(swear.first, 10, 50 );
-  matrix.drawText(swear.second, 10, 50 + 10);
+  matrix.drawText(swear.second, 10, 50 + 15);
   matrix.fgColor(oldColor);
+
+
 }
 
 
@@ -144,7 +151,8 @@ const writeSwear = (matrix: LedMatrixInstance) => {
       // swearToUschi(matrix)}
       // ,5000
     // );
-    setInterval(swearToUschi, 5000)
+    swearToUschi();
+    setInterval(swearToUschi, 5000);
     const updateTime = setInterval(() => {
       matrix.clear().brightness(80);
       matrix.fgColor(0x075078);

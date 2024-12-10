@@ -10,9 +10,23 @@ export class ImageSliderService extends Service {
     //save PID
     console.log(`Starting: ${this.name}`);
 
-    this.execProcess = spawn("ts-node", ["../ImageSlider/src/index.ts"], {
-      env: process.env,
-    });
+    // this.execProcess = spawn("node", ["../ImageSlider/dist/index.js"], {
+    //   env: process.env,
+    // });
+
+    this.execProcess = spawn("/home/pi/_LED-Tests/rpi-rgb-led-matrix/utils/led-image-viewer", [
+      "--led-rows=64",
+      "--led-cols=64",
+      "--led-chain=3",
+      "--led-parallel=2",
+      "--led-panel-type=FM6126A",
+      "--led-no-hardware-pulse",
+      "-w5",
+      "-f",
+      "/home/pi/_LED-Tests/rpi-rgb-led-matrix/utils/animation-out.stream"
+    ]);
+
+
     // this.execProcess = spawn("node", ["../Hud/dist/out.js"]);
     this.execProcess.on("spawn", () => {
       console.log("Spawned ImageSlider Process");

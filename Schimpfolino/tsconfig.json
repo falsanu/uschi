@@ -8,7 +8,8 @@
     "strict": true,
     "target": "es2019",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*"]
 }

@@ -6,9 +6,7 @@ export function UschiConfigurator() {
     const activateService = async (service:string) => {
         console.log(service);
 
-        const client = axios.create({
-            baseURL: 'http://localhost:3000',
-        });
+        const client = axios.create();
         
         try {
             const response = await client.get('/startService/'+service);
@@ -26,6 +24,7 @@ export function UschiConfigurator() {
             <Button onClick={() => activateService('screensaver')}>Screensaver </Button>
             <Button onClick={() => activateService('video')}>Video</Button>
             <Button onClick={() => activateService('schimpfolino')}>Schimpfolino</Button>
+            <Button onClick={() => activateService('off')}>aus</Button>
         </Group>
     );
 }

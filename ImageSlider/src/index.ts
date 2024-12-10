@@ -2,7 +2,7 @@ import { LedMatrix, LedMatrixInstance, Font } from 'rpi-led-matrix';
 import fs from 'fs/promises';
 import path from 'path';
 import { matrixOptions, runtimeOptions } from './config/_config';
-import { ImageToIcon } from '../../Hud/src/utils/ImageToIcon/index';
+import { ImageToIcon } from './utils/ImageToIcon/index';
 
 /** Make environment variables available */
 import dotenv from 'dotenv';
@@ -15,7 +15,6 @@ function drawImage(
   imageData: any
 ) {
   const oldColor = matrix.fgColor();
-  console.log(imageData.length);
   for (let lines = 0; lines < imageData.length; lines++) {
     for (let rows = 0; rows < imageData[lines].length; rows++) {
       matrix.fgColor(imageData[lines][rows]);
@@ -47,22 +46,31 @@ function drawImage(
       console.log(`No Images found in folder: ${folder}`);
       throw new Error(`No Images found in folder: ${folder}`);
     }
-    let counter = 0;
-
-    setInterval(async () => {
-      matrix.clear().fgColor(0xffffff).brightness(100);
-
-      if (!images[counter]) {
-        counter = 0;
-      }
+    
+    const imgData:any[] = [];
+    
+    images.map(async (image)=>{
       const img = new ImageToIcon({
-        pathToImage: `${folder}${images[counter]}`,
+        pathToImage: `${folder}${image}`,
         targetWidth: matrix.width(),
         targetHeight: matrix.height(),
         crop: false,
       });
       const data = await img.getPixelArrayAsync();
-      drawImage(matrix, 0, 0, data);
+      imgData.push(data);
+      // return data;
+    })
+
+    let counter = 0;
+
+    setInterval(async () => {
+      matrix.clear().fgColor(0xffffff).brightness(100);
+
+      if (!imgData[counter]) {
+        counter = 0;
+      }
+      
+      drawImage(matrix, 0, 0, imgData[counter]);
       counter++;
       matrix.sync();
     }, 5000);

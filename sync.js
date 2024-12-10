@@ -28,7 +28,9 @@ const rsync = Rsync.build({
     //'build',
     'package-lock.json',
     '.vscode',
-    //'dist',
+    'dist',
+    'tmp',
+    '.yarn'
   ],
   source: __dirname,
   destination: `${username}@${hostname}:${directory}`,

@@ -18,7 +18,7 @@ $ npm install -g uschi-cli
 $ uschi-cli COMMAND
 running command...
 $ uschi-cli (--version)
-uschi-cli/0.0.0 darwin-x64 node-v18.14.0
+uschi-cli/0.0.0 darwin-arm64 node-v22.12.0
 $ uschi-cli --help [COMMAND]
 USAGE
   $ uschi-cli COMMAND
@@ -27,8 +27,6 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`uschi-cli hello PERSON`](#uschi-cli-hello-person)
-* [`uschi-cli hello world`](#uschi-cli-hello-world)
 * [`uschi-cli help [COMMANDS]`](#uschi-cli-help-commands)
 * [`uschi-cli plugins`](#uschi-cli-plugins)
 * [`uschi-cli plugins:install PLUGIN...`](#uschi-cli-pluginsinstall-plugin)
@@ -39,46 +37,8 @@ USAGE
 * [`uschi-cli plugins:uninstall PLUGIN...`](#uschi-cli-pluginsuninstall-plugin-1)
 * [`uschi-cli plugins:uninstall PLUGIN...`](#uschi-cli-pluginsuninstall-plugin-2)
 * [`uschi-cli plugins update`](#uschi-cli-plugins-update)
-
-## `uschi-cli hello PERSON`
-
-Say hello
-
-```
-USAGE
-  $ uschi-cli hello PERSON -f <value>
-
-ARGUMENTS
-  PERSON  Person to say hello to
-
-FLAGS
-  -f, --from=<value>  (required) Who is saying hello
-
-DESCRIPTION
-  Say hello
-
-EXAMPLES
-  $ oex hello friend --from oclif
-  hello friend from oclif! (./src/commands/hello/index.ts)
-```
-
-_See code: [dist/commands/hello/index.ts](https://github.com/falsanu/uschi/uschi-cli/blob/v0.0.0/dist/commands/hello/index.ts)_
-
-## `uschi-cli hello world`
-
-Say hello world
-
-```
-USAGE
-  $ uschi-cli hello world
-
-DESCRIPTION
-  Say hello world
-
-EXAMPLES
-  $ uschi-cli hello world
-  hello world! (./src/commands/hello/world.ts)
-```
+* [`uschi-cli spawn [SERVICE]`](#uschi-cli-spawn-service)
+* [`uschi-cli webserver [SERVICE]`](#uschi-cli-webserver-service)
 
 ## `uschi-cli help [COMMANDS]`
 
@@ -332,4 +292,42 @@ FLAGS
 DESCRIPTION
   Update installed plugins.
 ```
+
+## `uschi-cli spawn [SERVICE]`
+
+Spawns a service
+
+```
+USAGE
+  $ uschi-cli spawn [SERVICE] [-t hud|screensaver|video|exit]
+
+FLAGS
+  -t, --service=<option>  define timezone, default Europe/Berlin
+                          <options: hud|screensaver|video|exit>
+
+DESCRIPTION
+  Spawns a service
+
+EXAMPLES
+  $ uschi spawn hud
+```
+
+_See code: [dist/commands/spawn/index.ts](https://github.com/falsanu/uschi/uschi-cli/blob/v0.0.0/dist/commands/spawn/index.ts)_
+
+## `uschi-cli webserver [SERVICE]`
+
+Starts a Webserver to control Uschi
+
+```
+USAGE
+  $ uschi-cli webserver [SERVICE]
+
+DESCRIPTION
+  Starts a Webserver to control Uschi
+
+EXAMPLES
+  $ uschi spawn hud
+```
+
+_See code: [dist/commands/webserver/index.ts](https://github.com/falsanu/uschi/uschi-cli/blob/v0.0.0/dist/commands/webserver/index.ts)_
 <!-- commandsstop -->

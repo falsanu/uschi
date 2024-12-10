@@ -10,7 +10,7 @@ export class HudService extends Service {
     //save PID
     console.log(`Starting: ${this.name}`);
 
-    this.execProcess = spawn("ts-node", ["../Hud/src/index.ts"], {
+    this.execProcess = spawn("node", ["../Hud/dist/index.js"], {
       env: process.env,
     });
     // this.execProcess = spawn("node", ["../Hud/dist/out.js"]);

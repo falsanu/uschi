@@ -3,6 +3,7 @@ import { LedMatrix, Font } from 'rpi-led-matrix';
 import { matrixOptions, runtimeOptions } from './config/_config';
 import { OctoPrint } from './octoPrint';
 import { BVG } from './BVG';
+import { Calendar } from './calendar';
 
 import { Weather } from './Weather';
 import dotenv from 'dotenv';
@@ -38,11 +39,16 @@ let flipContent: Boolean = true;
 
     let weather = new Weather();
     let bvg = new BVG();
-    let octo = new OctoPrint();
+    //let octo = new OctoPrint();
     // octo.updateLED();
+    let calendar = new Calendar();
+
     const changeScreenInterval = setInterval(() => {
       flipContent = !flipContent;
     }, 15000);
+
+
+
     const updateTime = setInterval(() => {
       matrix.clear().brightness(80);
       matrix.fgColor(0x075078);
@@ -76,7 +82,8 @@ let flipContent: Boolean = true;
 
       matrix.drawText(text, 150, 14);
       if (flipContent) {
-        octo.writeStatus(matrix);
+        // octo.writeStatus(matrix);
+        calendar.writeCalendar(matrix)
       } else {
         bvg.writeBVG(matrix);
       }

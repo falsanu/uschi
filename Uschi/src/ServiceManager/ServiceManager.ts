@@ -61,4 +61,14 @@ export class ServiceManager {
 
     return true;
   }
+
+  public stopAll(): void {
+    if (
+      this.activeService
+    ) {
+      console.log("Stop active Service")
+      this.activeService.kill(); // do we need await here?
+      this.activeService = null;
+    }
+  }
 }

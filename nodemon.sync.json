@@ -1,5 +1,5 @@
 {
-  "ext": "ts,json,cc,h,gyp",
+  "ext": "ts,json,cc,h,gyp,sh",
   "exec": "node sync",
   "events": {},
   "watch": [
@@ -8,6 +8,8 @@
     "ImageSlider/**",
     "Video/**",
     "src/**",
-    "package.json"
+    "package.json",
+    "Schimpfolino/**",
+    "ScreenSaver/**"
   ]
 }

@@ -2,6 +2,7 @@
   "ext": "ts,json,cc,h,gyp,sh",
   "exec": "node sync",
   "events": {},
+  "verbose": true,
   "watch": [
     "Hud/**",
     "Uschi/**",
@@ -10,6 +11,7 @@
     "src/**",
     "package.json",
     "Schimpfolino/**",
-    "ScreenSaver/**"
+    "ScreenSaver/**",
+    "HudSchool/**"
   ]
 }

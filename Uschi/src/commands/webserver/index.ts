@@ -44,6 +44,9 @@ export default class Webserver extends Command {
         case "hud":
           this.serviceManager.runService("HudService");
           break;
+        case "hudschool":
+            this.serviceManager.runService("HudSchool");
+            break;
         case "imageslider":
           this.serviceManager.runService("ImageSlider");
           break;

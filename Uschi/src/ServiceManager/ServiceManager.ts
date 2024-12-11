@@ -4,6 +4,7 @@ import { ScreenSaverService } from "../Services/ScreenSaverService/ScreenSaverSe
 import { Service } from "../Services/ServiceInterface";
 import { VideoService } from "../Services/VideoService/VideoService";
 import { SchimpfolinoService } from "../Services/SchimpfolinoService/SchimpfolinoService";
+import { HudSchool } from "../Services/HudSchool/HudSchool";
 
 export class ServiceManager {
   activeService: Service | null;
@@ -23,6 +24,9 @@ export class ServiceManager {
 
     const hudService = new HudService();
     this.services.push(hudService);
+
+    const HudSchoolService = new HudSchool();
+    this.services.push(HudSchoolService);
 
     const imageSliderService = new ImageSliderService();
     this.services.push(imageSliderService);

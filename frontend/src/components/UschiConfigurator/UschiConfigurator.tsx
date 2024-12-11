@@ -20,6 +20,7 @@ export function UschiConfigurator() {
     return (
         <Group justify="center" mt="xl">
             <Button onClick={() => activateService('hud')}>HUD</Button>
+            <Button onClick={() => activateService('hudschool')}>School</Button>
             <Button onClick={() => activateService('imageslider')}>Images </Button>
             <Button onClick={() => activateService('screensaver')}>Screensaver </Button>
             <Button onClick={() => activateService('video')}>Video</Button>

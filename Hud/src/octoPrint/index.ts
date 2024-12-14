@@ -15,8 +15,8 @@ const font = new Font(
  *
  */
 export class OctoPrint {
-  private apiKey: string = process.env.OCTO_API_KEY || '';
-  private apiUrl: string = process.env.OCTO_API_URL || '';
+  private apiKey: string = '';
+  private apiUrl: string = '';
   private logo: Array<Array<any>> = [
     [
       0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -144,7 +144,14 @@ export class OctoPrint {
 
   public jobStatus: any = {};
 
-  constructor() {
+  constructor(apiUrl: string = '', apiKey: string = '') {
+    this.apiUrl = apiUrl;
+    this.apiKey = apiKey;
+
+    if (!this.hasConnection()) {
+      return;
+    }
+
     this.getStatusData();
     this.updater = setInterval(
       this.getStatusData.bind(this),
@@ -152,6 +159,32 @@ export class OctoPrint {
     );
   }
 
+  hasConnection(): boolean {
+      const url = `${this.apiUrl}/job`;
+      console.log('Checking Connection', url);
+      const response = axios.get(url, {
+        headers: { 'x-api-key': this.apiKey },
+      }).catch(function (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        return false;
+      });
+      return true;
+  }
+  
   async getStatusData() {
     try {
       const url = `${this.apiUrl}/job`;
@@ -170,7 +203,7 @@ export class OctoPrint {
     }
   }
 
-  writeStatus(matrix: LedMatrixInstance, headerHeight: number = 0) {
+  writeToDisplay(matrix: LedMatrixInstance, headerHeight: number = 0) {
     let x = headerHeight;
     matrix.font(font);
 

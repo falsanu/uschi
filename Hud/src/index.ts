@@ -7,6 +7,7 @@ import { Calendar } from './calendar';
 
 import { Weather } from './Weather';
 import dotenv from 'dotenv';
+import { Soccer } from './soccer';
 dotenv.config();
 
 const font = new Font(
@@ -20,7 +21,9 @@ const titleFont = new Font(
 
 let counter2 = 0;
 let flip: Boolean = false;
-let flipContent: Boolean = true;
+
+
+
 
 (() => {
   try {
@@ -36,16 +39,59 @@ let flipContent: Boolean = true;
      * OctoPi connection
      * BVG connection
      */
+    const contentProvider: any[] = []; // Items which were presented on the screen
 
     let weather = new Weather();
-    let bvg = new BVG();
-    //let octo = new OctoPrint();
-    // octo.updateLED();
-    let calendar = new Calendar();
 
-    const changeScreenInterval = setInterval(() => {
-      flipContent = !flipContent;
-    }, 15000);
+    
+    if (process.env.BVG_STATIONS) {
+      const stations = process.env.BVG_STATIONS.split(' ');
+      let bvg = new BVG(stations);
+      contentProvider.push(bvg)
+    }
+
+    if (process.env.OCTO_API_URL && process.env.OCTO_API_KEY) {
+      const apiKey: string = process.env.OCTO_API_KEY || '';
+      const apiUrl: string = process.env.OCTO_API_URL || '';
+
+      let octo = new OctoPrint(apiUrl, apiKey);
+      if (!octo.hasConnection()) {
+        return;
+      }
+      contentProvider.push(octo);
+    }
+
+    if (process.env.CALENDAR_URL) {
+      let calendar = new Calendar(process.env.CALENDAR_URL);
+      contentProvider.push(calendar)
+    }
+
+    let soccerbl1 = new Soccer('bl1');
+    let soccerbl2 = new Soccer('bl2');
+    contentProvider.push(soccerbl1)
+    contentProvider.push(soccerbl2)
+    
+
+
+    /**
+     * Iterate through all content provider
+     */
+
+    let index = 0;
+    let currentContentProvider = contentProvider[index];
+
+
+    // Funktion, die den aktuellen Content setzt anzeigt
+    function setCurrentContent() {
+
+      index = (index + 1) % contentProvider.length; // Zum nächsten Eintrag wechseln, zurück zu 0 am Ende
+      currentContentProvider = contentProvider[index];
+      console.log(contentProvider[index]); // Aktuellen Eintrag anzeigen
+    }
+
+    // Alle 15 Sekunden die Funktion ausführen
+    setInterval(setCurrentContent, 15000); // 15000 ms = 15 Sekunden
+
 
 
 
@@ -64,7 +110,6 @@ let flipContent: Boolean = true;
         day: '2-digit',
       };
       let text: string;
-      // matrix.drawText('Donnerstag', 10, 60);
 
       if (counter2 == 15) {
         flip = !flip;
@@ -79,14 +124,12 @@ let flipContent: Boolean = true;
           second: '2-digit',
         });
       }
-
       matrix.drawText(text, 150, 14);
-      if (flipContent) {
-        // octo.writeStatus(matrix);
-        calendar.writeCalendar(matrix)
-      } else {
-        bvg.writeBVG(matrix);
-      }
+
+
+      // Write the main Content
+      // console.log(currentContentProvider)
+      currentContentProvider.writeToDisplay(matrix, 4, 28);
 
       weather.writeWeatherData(matrix);
       matrix.sync();

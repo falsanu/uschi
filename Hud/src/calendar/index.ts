@@ -3,7 +3,7 @@ import axios from "axios";
 import { icsCalendarToObject, type VCalendar, type VEvent } from "ts-ics";
 import { Font } from 'rpi-led-matrix';
 import { LedMatrixInstance } from 'rpi-led-matrix';
-import { replaceUmlaute, getMinutes, drawTextLineHelper } from '../utils';
+import { drawTextLineHelper } from '../utils';
 
 
 export class Calendar {
@@ -15,20 +15,18 @@ export class Calendar {
         `${process.cwd()}/../Hud/fonts/spleen-5x8.bdf`
       );
 
-    constructor() {
+    constructor(calendar_url:string) {
         //read ics
-        if (!process.env.CALENDAR_URL) {
+        if (!calendar_url) {
             console.log("No Webcal URL set.")
             return;
         }
         
-        
-        const calendarUrl = process.env.CALENDAR_URL;
-        this.initEverything(calendarUrl)
+        this.initEverything(calendar_url)
 
         setInterval(()=>{
             console.log("Updating Calender");
-            this.createCalendar(calendarUrl)
+            this.createCalendar(calendar_url)
             this.eventsToShow = this.pickNextEvents(4);
         }, 600000)
     }
@@ -68,7 +66,7 @@ export class Calendar {
         return events;
     }
 
-    writeCalendar(matrix: LedMatrixInstance) {
+    writeToDisplay(matrix: LedMatrixInstance) {
         matrix.font(this.font);
         const oldColor = matrix.fgColor();
         matrix.fgColor(0xffffff);
@@ -90,4 +88,4 @@ export class Calendar {
     
 }
 
-const cal = new Calendar();
+//const cal = new Calendar();

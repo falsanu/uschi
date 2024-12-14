@@ -12,13 +12,15 @@ dotenv.config();
 export class BVG {
   private BVGData: Array<any>;
   private updateInterval: number = 15000;
+  private stations: string[];
   private updater: any;
   private font = new Font(
     'spleen-5x8.bdf',
     `${process.cwd()}/../Hud/fonts/spleen-5x8.bdf`
   );
 
-  constructor() {
+  constructor(stations:string[] = []) {
+    this.stations = stations;
     this.BVGData = [];
     this.updateBVGData();
     // update data every n seconds
@@ -28,19 +30,16 @@ export class BVG {
     );
   }
 
-  updateBVGData(stations?: Array<string>) {
-    if (!stations) {
-      if (process.env.BVG_STATIONS) {
-        stations = process.env.BVG_STATIONS.split(' ');
-      } else {
+  updateBVGData() {
+    if (!this.stations.length) {
+      
         console.log('No Stations given');
         return;
-      }
     }
 
-    console.log('Updating BVG-Data for:', stations);
+    console.log('Updating BVG-Data for:', this.stations);
     this.BVGData = [];
-    stations.forEach(async (item) => {
+    this.stations.forEach(async (item) => {
       try {
         const response = await axios.get(
           `https://v6.bvg.transport.rest/stops/${item}/departures?results=10`,
@@ -79,7 +78,7 @@ export class BVG {
     });
   }
 
-  writeBVG(matrix: LedMatrixInstance) {
+  writeToDisplay(matrix: LedMatrixInstance) {
     matrix.font(this.font);
     const oldColor = matrix.fgColor();
     matrix.fgColor(0xffffff);

@@ -56,23 +56,26 @@ let flipContent: Boolean = true;
     });
     let schoolMathilda = new School(
       {
-          name: "Mathilda",
-          plan: [
-              //mo,   di,   mi,   do,   fr
-              ["De", "MB", "Sa", "De", "Ma"],     // 1.Stunde
-              ["Ma", "De", "De", "Mu", "De"],     // 2.Stunde
-              ["Mu", "Ku", "Ma", "De", "VHG"],    // 3.Stunde
-              ["Lk", "Ku", "VHG", "Ma", "Sa"],    // 4.Stunde
-              ["-", "Ma", "De", "De", "Sp"],      // 5.Stunde
-              ["-", "Sp", "Foe", "Sp", "-"],      // 6.Stunde
-              ["-", "-", "-", "-", "-"],          // 7.Stunde
-          ],
-          appointments:
-              ["Mo: Karate, Di: Drums, Do: Karate"]
+        name: "Mathilda",
+        plan: [
+          //mo,   di,   mi,   do,   fr
+          ["De", "MB", "Sa", "De", "Ma"],     // 1.Stunde
+          ["Ma", "De", "De", "Mu", "De"],     // 2.Stunde
+          ["Mu", "Ku", "Ma", "De", "VHG"],    // 3.Stunde
+          ["Lk", "Ku", "VHG", "Ma", "Sa"],    // 4.Stunde
+          ["-", "Ma", "De", "De", "Sp"],      // 5.Stunde
+          ["-", "Sp", "Foe", "Sp", "-"],      // 6.Stunde
+          ["-", "-", "-", "-", "-"],          // 7.Stunde
+        ],
+        appointments:
+          ["Mo: Karate, Di: Drums, Do: Karate"]
       });
 
 
 
+    /**
+     * Iterate through all content provider
+     */
     const entries: any[] = [calendar, schoolHelena, schoolMathilda]; // Deine Liste
     let index = 1;
     let currentContent = entries[index];

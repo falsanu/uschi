@@ -12,6 +12,7 @@
     "package.json",
     "Schimpfolino/**",
     "ScreenSaver/**",
-    "HudSchool/**"
+    "HudSchool/**",
+    "Draw/**"
   ]
 }

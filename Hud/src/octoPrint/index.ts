@@ -159,10 +159,10 @@ export class OctoPrint {
     );
   }
 
-  hasConnection(): boolean {
+  async hasConnection(): Promise<boolean> {
       const url = `${this.apiUrl}/job`;
       console.log('Checking Connection', url);
-      const response = axios.get(url, {
+      const response =  await axios.get(url, {
         headers: { 'x-api-key': this.apiKey },
       }).catch(function (error) {
         if (error.response) {
@@ -180,11 +180,12 @@ export class OctoPrint {
           // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message);
         }
-        return false;
+        return Promise.resolve(false);
       });
-      return true;
+      return Promise.resolve(true);
+      
   }
-  
+
   async getStatusData() {
     try {
       const url = `${this.apiUrl}/job`;
@@ -269,11 +270,7 @@ export class OctoPrint {
     }
     matrix.fgColor(oldColor);
   }
-
-  // updateLED() {
-  //   console.log('Updating Octo-View');
-  //   this.writeStatus();
-  // }
+  
 }
 
 function getRGBValue(input: number): number {

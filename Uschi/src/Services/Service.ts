@@ -25,6 +25,11 @@ export class Service implements Service {
     this.execProcess.on("spawn", () => {
       console.log("Spawned HUD Process");
     });
+
+    setInterval(()=>{
+      this.execProcess.send("Message");
+    },1000)
+
     this.execProcess.stdout.on("data", (data: any) => {
       console.log(`HUD Process on stdout: ${data}`);
     });
@@ -39,7 +44,10 @@ export class Service implements Service {
     });
     return true;
   }
-
+  
+  public send(msg:string) {
+    console.log("sendingMessages not implemented for service")
+  }
   public kill(): boolean {
     try {
       this.execProcess.kill("SIGHUP");

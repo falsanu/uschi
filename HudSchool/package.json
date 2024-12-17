@@ -1,7 +1,7 @@
 {
-  "name": "hud",
+  "name": "hud-school",
   "version": "1.0.0",
-  "description": "Displays data on the rpi-LED-Display",
+  "description": "Displays School plans on the rpi-LED-Display",
   "main": "dist/index.js",
   "author": "Jan Fanslau",
   "license": "MIT",

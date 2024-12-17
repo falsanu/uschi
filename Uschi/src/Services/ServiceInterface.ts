@@ -3,4 +3,5 @@ export interface Service {
   pid?: number;
   run(): boolean;
   kill(): boolean;
+  send(msg:any): any
 }

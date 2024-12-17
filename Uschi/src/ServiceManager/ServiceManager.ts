@@ -5,6 +5,7 @@ import { Service } from "../Services/ServiceInterface";
 import { VideoService } from "../Services/VideoService/VideoService";
 import { SchimpfolinoService } from "../Services/SchimpfolinoService/SchimpfolinoService";
 import { HudSchool } from "../Services/HudSchool/HudSchool";
+import { DrawService } from "../Services/DrawService/DrawService";
 
 export class ServiceManager {
   activeService: Service | null;
@@ -36,10 +37,12 @@ export class ServiceManager {
 
     const schimpfolinoService = new SchimpfolinoService();
     this.services.push(schimpfolinoService);
+
+    const drawService = new DrawService();
+    this.services.push(drawService);
   }
 
   private pickService(service: string): any {
-    console.log(service);
     return this.services.find((e) => e.name === service);
   }
 
@@ -59,7 +62,7 @@ export class ServiceManager {
       this.activeService.kill(); // do we need await here?
     }
 
-    console.log(nextService);
+    //console.log(nextService);
     nextService.run();
     this.activeService = nextService;
 

@@ -4,11 +4,12 @@ import { matrixOptions, runtimeOptions } from './config/_config';
 import { OctoPrint } from './octoPrint';
 import { BVG } from './BVG';
 import { Calendar } from './calendar';
-
 import { Weather } from './Weather';
-import dotenv from 'dotenv';
 import { Soccer } from './soccer';
+
+import dotenv from 'dotenv';
 dotenv.config();
+console.log(process.env.OCTO_API_KEY)
 
 const font = new Font(
   'spleen-5x8.bdf',
@@ -25,7 +26,7 @@ let flip: Boolean = false;
 
 
 
-(() => {
+(async () => {
   try {
     /**
      * Instanciate new Matrix, clear it and set the drawing color to white
@@ -55,10 +56,16 @@ let flip: Boolean = false;
       const apiUrl: string = process.env.OCTO_API_URL || '';
 
       let octo = new OctoPrint(apiUrl, apiKey);
-      if (!octo.hasConnection()) {
+      if (! await octo.hasConnection()) {
+        console.log("OCTO No Connection given")
         return;
+      }else {
+        contentProvider.push(octo);
       }
-      contentProvider.push(octo);
+    }else{
+      console.log("OCTO No ENVs given")
+      console.log(process.env.OCTO_API_URL)
+      console.log(process.env.OCTO_API_KEY)
     }
 
     if (process.env.CALENDAR_URL) {
@@ -86,7 +93,7 @@ let flip: Boolean = false;
 
       index = (index + 1) % contentProvider.length; // Zum nächsten Eintrag wechseln, zurück zu 0 am Ende
       currentContentProvider = contentProvider[index];
-      console.log(contentProvider[index]); // Aktuellen Eintrag anzeigen
+      //console.log(contentProvider[index]); // Aktuellen Eintrag anzeigen
     }
 
     // Alle 15 Sekunden die Funktion ausführen

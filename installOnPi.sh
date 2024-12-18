@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# WORK IN PROGRESS - THIS IS PROPABLY NOT WORKIG
 cwd=$(pwd)
 
 export NVM_DIR=$HOME/.nvm;

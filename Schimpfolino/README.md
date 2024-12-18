@@ -1,4 +1,4 @@
-# Uschis hud
+# Schimpfolino
 
 ## Installation
 

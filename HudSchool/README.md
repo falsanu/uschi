@@ -1,17 +1,9 @@
-# Uschis hud
+# HUD School - Lesson Plan per Kid
 
 ## Installation
 
 `npm install`
 
-create environment variables or .env-File
+## Plan creation
+- check [src/index.ts](src/index.ts) to create your own plan
 
-```
-OCTO_API_KEY=
-OCTO_API_URL=
-BVG_STATIONS="space separated list of station IDs"
-```
-
-### BVG-stations
-
-checkout https://v6.bvg.transport.rest/getting-started.html

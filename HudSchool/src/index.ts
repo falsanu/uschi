@@ -32,8 +32,8 @@ let flipContent: Boolean = true;
     /**
      * Instanciate all "Widgets"
      * Weather
-     * OctoPi connection
-     * BVG connection
+     * Calendar
+     * Kids
      */
 
     let weather = new Weather();

@@ -51,19 +51,6 @@ const drawHeader = (matrix: any) => {
         // matrix.setPixel(data.data.x, data.data.y);
       }
 
-      matrix.afterSync((mat, dt, t) => {
-        counter++;
-        if (counter > runUntil) {
-          counter = 0;
-          resetMatrix();
-        }
-        bubbles.forEach((item) => {
-          item.update();
-          item.draw();
-        });
-  
-        setTimeout(() => matrix.sync(), 20);
-      });
       matrix.sync();
     })
     /**

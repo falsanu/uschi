@@ -2,7 +2,7 @@
 
 Uschi is a Raspberry Pi powered personal helper. You talk it does.
 
-![Uschi on Desk](docs/IMG_9515.jpg?raw=true)
+![Uschi on Desk](doc/images/IMG_9515.jpg?raw=true)
 
 Big shout out to:
 
